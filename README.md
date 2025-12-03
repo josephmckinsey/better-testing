@@ -69,9 +69,13 @@ https://leanprover-community.github.io/mathlib4_docs/Init/System/IO.html#IO.setS
 
 - How do I get line numbers ranges of a declaration?
 
+Also see https://github.com/leanprover-community/import-graph/blob/6e3bb4bf31f731ab28891fe229eb347ec7d5dad3/ImportGraph/RequiredModules.lean#L19-L27
+
 See `elabCheckLineRemote` in `BetterTesting/DebugModule.lean`.
 
 - How do I compute a hash of a declaration which includes dependencies?
+
+As above, see the import-graph library.
 
 See `computeRecursiveHashAux` in `BetterTesting/Basic.lean`
 
