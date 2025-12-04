@@ -79,9 +79,13 @@ As above, see the import-graph library.
 
 See `computeRecursiveHashAux` in `BetterTesting/Basic.lean`
 
+Also https://github.com/PatrickMassot/checkdecls is often used to check declarations.
+
 - How do I annotate functions with code coverage tracking?
 
-??? In general it would be nice to hook into code gen for monitoring or whatever.
+Option 1: You find all the constants which a test uses and count those as "tested". Pros: simple and can be done based on test success. Cons: very optimistic.
+
+Option 2: You inspect all definition in a module, and create a new copy with a `dbg_trace` instrumented through the expressions. The tests will then use these definitions. Pros: complete. Cons: might necessitate metaprogramming even in the test runner.
 
 - How do I tell if a function is pure or not?
 
@@ -97,13 +101,26 @@ def arr : Array Int := #[1, 2]
 #eval arr[3]!
 ```
 
+If you are using MonadEval, then it likely has a better chance of success. Otherwise,
+there does not appear to be a way.
+
 - How do IDEs (VS Code) handle tests?
 
-I personally never use the IDE test integration.
+??? I personally never use the IDE test integration.
 
 - Where do we store the test information of the last run test?
 
-It would be nice for this to work in Github CI/CD.
+It would be nice for this to work in Github CI/CD. They should likely be build artifacts.
+
+- Can I add a custom build option for things like test hashes?
+
+Yes, this is possible with module facets, where we can run an exe to import a module and start inspecting definitions. The build directory location can then be accessed in a lakefile.lean for the test run. We will still need to pass that to the lake testDriver somehow, testDriverArgs maybe? Additionally, this does not directly solve the registration problem.
+
+https://github.com/leanprover/subverso/blob/ca5ac0281173cab419c49c9c367e50f74854bc49/lakefile.lean#L183
+
+doc-gen4 also has some facet trickery to get process things like the src directory.
+
+https://github.com/leanprover/doc-gen4/blob/2679356b3372d52f76d6d984eef16cade7956e0c/lakefile.lean#L224
 
 # Design Questions
 
